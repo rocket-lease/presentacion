@@ -1,0 +1,7 @@
+presentacion_final.md: Estructura de la presentación.
+Artefactos_RocketLease.xlsx: Archivo Excel en donde cada pestaña es un artefacto. Muchos de estos son nombrados con nombre exacto, o similar, en la estructura de la presentación
+Riesgos_S<n>.jpeg: Imagen que contiene el estado actual de los riesgos para el Sprint N. Revisar todos y hacer una cronología de los mismos. Importante: Riesgos_Sprint1 aplica cambios sobre base de Artfactos_2026-05-06.pptx
+Artefactos_YYYY-MM-DD.pptx: Presentación de avances en el desarrollo de los artefactos de gestión de proyecto hasta la fecha. Son previos al inicio del desarrollo técnico del proyecto. Utilizarlos para demostrar la interacción con la inteligencia artificial a la hora de desarrollar estos artefactos
+WORKFLOW.md: workflow de interacción con la inteligencia artificial a la hora de desarrollar las user stories.
+BRAND.md: Líneamientos de marca de Rocket Lease.
+DESIGN.md: Design System de marca Rocket Lease.
