@@ -815,34 +815,27 @@ h1,h2,h3{letter-spacing:-0.02em; line-height:1.12; font-weight:700}
     </div>
   </section>
 
-  <!-- 4 · PERSONAS -->
+  <!-- 4 · PERSONAS Y FEATURES -->
   <section class="slide" data-sec="intro" data-name="Personas">
     <div class="slide-inner">
-      <h2 class="title">Seis personas, seis necesidades</h2>
-      <p class="lead">No diseñamos para "un usuario": diseñamos para necesidades reales que hoy quedan afuera.</p>
-      <div class="persona-grid" style="margin-top:18px" id="personaGrid"></div>
-    </div>
-  </section>
-
-  <!-- 5 · FEATURES ↔ PERSONAS -->
-  <section class="slide" data-sec="intro" data-name="Features ↔ Personas">
-    <div class="slide-inner">
-      <h2 class="title">No todos valoran lo mismo</h2>
-      <p class="lead">Valoración real de cada persona (1-5).</p>
+      <h2 class="title">Personas y sus valoraciones</h2>
+      <p class="lead">Seis personas, seis necesidades · no todos valoran lo mismo.</p>
       <div class="feat-wrap" style="margin-top:16px">
         <div class="feat-personas" id="featPersonas"></div>
         <div class="feat-panel">
           <div class="fh"><b id="fpName"></b><span id="fpTag"></span></div>
-          <div id="fpDesc" style="font-size:13px;color:var(--tx2)"></div>
+          <div id="fpRole" style="font-size:11.5px;color:var(--tx-muted);margin:-2px 0 2px"></div>
+          <div id="fpDesc" style="font-size:12.5px;color:var(--tx2);margin:0 0 4px"></div>
+          <div id="fpNeed" style="font-size:12px;color:var(--brand-300);margin-bottom:8px"></div>
           <div class="feat-rows" id="featRows"></div>
           <div class="feat-note" id="featNote"></div>
         </div>
       </div>
       <div class="core-strip">
-        <span class="lbl">Núcleo común (valoración promedio ≥ 5,0 / ≈4,3):</span>
-        <span class="chip" style="color:var(--brand-300)">Registro y login · 5,0</span>
-        <span class="chip" style="color:var(--brand-300)">Gestión de pagos · 5,0</span>
-        <span class="chip">Reserva con concurrencia · 4,3</span>
+        <span class="lbl">Pilares de Rocket Lease:</span>
+        <span class="chip" style="color:var(--brand-300)">Rapidez</span>
+        <span class="chip" style="color:var(--brand-300)">Flexibilidad</span>
+        <span class="chip" style="color:var(--brand-300)">Confianza</span>
       </div>
     </div>
   </section>
@@ -1318,17 +1311,23 @@ const FEAT_LABEL = {
   F29:"Edición masiva de precios",F30:"Etiquetas destacadas",F31:"Múltiples medios de pago",F32:"Voucher digital con QR",F33:"Tarifas escalonadas"
 };
 const FEAT_PERSONAS = [
-  {nm:"Julián", cls:"cli", tag:"Conductor frecuente", desc:"Reserva en pocos clicks y reutiliza autos que ya conoce.",
+  {nm:"Julián", cls:"cli", role:"Conductor", tag:"Conductor frecuente", desc:"Reserva en pocos clicks y reutiliza autos que ya conoce.",
+   need:"Perfil precargado · re-reserva · favoritos · niveles",
    top:[["F01",5,1],["F04",5,0],["F05",5,0],["F14",5,1],["F23",5,1],["F27",5,1],["F28",5,1],["F06",5,0]]},
-  {nm:"Sofía", cls:"cli", tag:"Cliente desconfiada", desc:"Lee todo antes de confirmar: necesita transparencia total.",
+  {nm:"Sofía", cls:"cli", role:"Conductor", tag:"Cliente desconfiada", desc:"Lee todo antes de confirmar: necesita transparencia total.",
+   need:"Contrato claro · desglose de costos · soporte",
    top:[["F01",5,0],["F02",5,1],["F04",5,0],["F06",5,0],["F08",5,1],["F09",5,1],["F11",5,1],["F17",5,1],["F26",5,1]]},
-  {nm:"Martín", cls:"cli", tag:"Movilidad reducida", desc:"Pierde tiempo con autos que no puede manejar.",
+  {nm:"Martín", cls:"cli", role:"Conductor", tag:"Movilidad reducida", desc:"Pierde tiempo con autos que no puede manejar.",
+   need:"Filtro de transmisión · etiquetas de accesibilidad",
    top:[["F01",5,0],["F04",5,0],["F24",5,1],["F25",5,1],["F30",5,1],["F06",5,0],["F02",4,0],["F08",4,0]]},
-  {nm:"Tomás", cls:"cli", tag:"Estudiante sin crédito", desc:"Solo débito y billetera; teme perder la reserva por demoras.",
+  {nm:"Tomás", cls:"cli", role:"Conductor", tag:"Estudiante sin crédito", desc:"Solo débito y billetera; teme perder la reserva por demoras.",
+   need:"Múltiples medios de pago · confirmación · voucher QR",
    top:[["F01",5,0],["F04",5,0],["F06",5,0],["F26",5,1],["F31",5,1],["F32",5,1],["F02",4,0],["F09",4,0]]},
-  {nm:"Lucas", cls:"own", tag:"Rentadora mediana", desc:"Revisa métricas y ajusta precios para destacar.",
+  {nm:"Lucas", cls:"own", role:"Rentador", tag:"Rentadora mediana", desc:"Revisa métricas y ajusta precios para destacar.",
+   need:"Dashboard · stock en tiempo real · promociones",
    top:[["F01",5,0],["F03",5,1],["F06",5,0],["F09",5,1],["F12",5,1],["F20",5,1],["F22",5,1],["F10",5,0]]},
-  {nm:"Carmen", cls:"own", tag:"Rentadora grande (350)", desc:"Cambia precios a mano; los autos adaptados no se destacan.",
+  {nm:"Carmen", cls:"own", role:"Rentador", tag:"Rentadora grande (350)", desc:"Cambia precios a mano; los autos adaptados no se destacan.",
+   need:"Edición masiva · etiquetas destacadas · temporadas",
    top:[["F01",5,0],["F05",5,0],["F06",5,0],["F29",5,1],["F30",5,1],["F33",5,1],["F12",5,1],["F20",5,1]]}
 ];
 
@@ -1505,15 +1504,6 @@ const SEC_NAMES = {intro:"Introducción", demo:"Demo", gest:"Gestión del Proyec
 $("#team").innerHTML = TEAM.map(n=>`<span class="m">${n}</span>`).join("");
 $("#teamLine").textContent = TEAM.join(" · ");
 
-// personas
-$("#personaGrid").innerHTML = PERSONAS.map(p=>`
-  <div class="persona ${p.cls}">
-    <div class="ph"><span class="nm">${p.nm}</span><span class="role">${p.role}</span></div>
-    <div style="font-size:11.5px;color:var(--tx-muted);margin:-4px 0 8px">${p.tag}</div>
-    <div class="desc">${p.desc}</div>
-    <div class="need">★ ${p.need}</div>
-  </div>`).join("");
-
 // features personas
 const fpEls = FEAT_PERSONAS.map((p,i)=>`
   <button class="fp-btn ${p.cls} ${i===0?'active':''}" data-i="${i}">
@@ -1525,8 +1515,10 @@ function renderFeat(i){
   const p = FEAT_PERSONAS[i];
   const col = p.cls==="cli" ? "var(--client)" : "var(--owner)";
   $("#fpName").textContent = p.nm;
+  $("#fpRole").textContent = p.role;
   $("#fpTag").textContent = p.tag;
   $("#fpDesc").textContent = p.desc;
+  $("#fpNeed").innerHTML = "★ " + p.need;
   $("#featRows").innerHTML = p.top.map(([f,sc,killer])=>`
     <div class="frow ${killer?'killer':''}">
       <span class="fl">${killer?'★ ':''}${FEAT_LABEL[f]}</span>
@@ -1962,7 +1954,7 @@ function buildOverview(){
 // charts trigger por slide (por data-name, robusto al reordenamiento)
 function triggerSlide(i){
   const name=slides[i].dataset.name;
-  if(name.includes("Features")) renderFeat(FEAT_ACTIVE);
+  if(name==="Personas") renderFeat(FEAT_ACTIVE);
   if(name.includes("Cronograma")) drawCronChart();
   if(name.includes("Burn")) drawBurnViews();
   if(name.includes("Avance")) {drawAvanceBars();drawAvanceCum();}
@@ -2011,7 +2003,7 @@ document.addEventListener("keydown",e=>{
     if(e.key==="Escape"||e.key.toLowerCase()==="o")closeOverview();
     return;
   }
-  if(slides[cur].dataset.name==="Features ↔ Personas"&&(e.key==="ArrowUp"||e.key==="ArrowDown")){e.preventDefault();
+  if(slides[cur].dataset.name==="Personas"&&(e.key==="ArrowUp"||e.key==="ArrowDown")){e.preventDefault();
     let n=FEAT_ACTIVE+(e.key==="ArrowUp"?-1:1);
     if(n<0)n=FEAT_PERSONAS.length-1;if(n>=FEAT_PERSONAS.length)n=0;
     FEAT_ACTIVE=n;renderFeat(n);
@@ -2038,8 +2030,8 @@ document.addEventListener("keydown",e=>{
     case"f":case"F":e.preventDefault();toggleFull();break;
     case"?":toggleHelp(true);break;
     default:
-      // 1 Portada · 2 Intro · 3 Demo · 4 Gestión · 5 Riesgos · 6 Cierre
-      if(/^[1-6]$/.test(e.key)){const map=[0,1,6,7,14,15]; go(map[+e.key-1]);}
+      // 1 Portada · 2 Intro · 3 Demo · 4 Gestión · 5 Avance · 6 Riesgos
+      if(/^[1-6]$/.test(e.key)){const map=[0,1,5,6,12,13]; go(map[+e.key-1]);}
   }
 });
 
