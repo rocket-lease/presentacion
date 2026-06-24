@@ -122,7 +122,8 @@ h1,h2,h3{letter-spacing:-0.02em; line-height:1.12; font-weight:700}
 /* El deck va por encima de las clickzones: solo el contenido interactivo captura
    clicks; las zonas vacías del slide los dejan pasar a las clickzones del borde. */
 .slide.active button,.slide.active a,.slide.active svg,
-.slide.active .step,.slide.active .rl-item,.slide.active .persona{pointer-events:auto}
+.slide.active .step,.slide.active .rl-item,.slide.active .persona,
+.slide.active .usm-chat{pointer-events:auto}
 .slide-inner{width:100%;max-width:var(--maxw);margin:0 auto;width:100%}
 
 /* tipografía de slide */
@@ -294,11 +295,9 @@ h1,h2,h3{letter-spacing:-0.02em; line-height:1.12; font-weight:700}
 .toggle button{border:0;background:transparent;color:var(--tx2);font-family:inherit;font-weight:600;font-size:13.5px;
   padding:8px 18px;border-radius:9999px;cursor:pointer;transition:var(--dur) var(--ease)}
 .toggle button.on{background:var(--brand);color:#fff;box-shadow:0 4px 14px var(--shadow-brand)}
-.usm-stage{position:relative;min-height:320px}
-.usm-view{position:absolute;inset:0;visibility:visible;
-  transition:opacity var(--dur) var(--ease),transform var(--dur) var(--ease)}
-.usm-view.hide{opacity:0;transform:translateY(8px);pointer-events:none;visibility:hidden;
-  transition:opacity var(--dur) var(--ease),transform var(--dur) var(--ease),visibility 0s linear var(--dur)}
+.usm-stage{position:relative}
+.usm-view{animation:burnFade var(--dur) var(--ease)}
+.usm-view.hide{display:none}
 /* antes */
 .usm-before{display:grid;grid-template-columns:1.2fr 1fr;gap:18px;align-items:center}
 .loose-chips{display:flex;flex-wrap:wrap;gap:8px}
@@ -317,6 +316,66 @@ h1,h2,h3{letter-spacing:-0.02em; line-height:1.12; font-weight:700}
 .usm-role.cli .bb{box-shadow:inset 0 -2px 0 var(--client)}
 .usm-role.own .bb{box-shadow:inset 0 -2px 0 var(--owner)}
 .after-arrows{margin-top:12px;font-size:12px;color:var(--brand-300);display:flex;flex-wrap:wrap;gap:6px 16px}
+/* USM · 3 etapas (antes/después = mapa con conteos · chat IA aligerado) */
+.usm-score{display:inline-flex;align-items:center;gap:7px;border-radius:9999px;padding:4px 12px;font-size:12.5px;font-weight:600;width:max-content}
+.usm-score b{font-weight:800}
+.usm-score.bad{background:rgba(239,68,68,.14);color:#fca5a5}
+.usm-score.good{background:rgba(16,185,129,.15);color:#6ee7b7}
+/* mapa USM (épica → actividades → nº de historias) */
+.umap{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}
+.urole2{background:var(--s1);border-radius:12px;padding:13px 14px;box-shadow:var(--sh-card)}
+.urh{display:flex;align-items:center;gap:8px;font-size:13.5px;font-weight:700;color:var(--tx);margin-bottom:10px}
+.urh .cnt{margin-left:auto;font-size:11px;font-weight:600;color:var(--tx-muted)}
+.uepic{border-radius:9px;padding:7px 10px;margin-bottom:6px;background:var(--s2)}
+.uepic:last-child{margin-bottom:0}
+.uepic-h{display:flex;align-items:center;gap:8px}
+.uen{font-size:12px;font-weight:700;color:var(--tx)}
+.uet{margin-left:auto;font-size:10.5px;font-weight:800;border-radius:9999px;padding:1px 8px;background:var(--s4);color:var(--tx2)}
+.uacts{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
+.uact{display:inline-flex;align-items:center;gap:5px;font-size:10.5px;color:var(--tx-muted);background:var(--s3);border-radius:6px;padding:2px 7px}
+.uact b{color:var(--tx2);font-weight:800}
+.umap.after .cli .uepic{box-shadow:inset 3px 0 0 var(--client)}
+.umap.after .own .uepic{box-shadow:inset 3px 0 0 var(--owner)}
+.umap.after .cli .uet{background:var(--client-sub);color:var(--client)}
+.umap.after .own .uet{background:var(--owner-sub);color:var(--owner)}
+.umap.after .cli .uact b{color:var(--client)}
+.umap.after .own .uact b{color:var(--owner)}
+.umap.antes .uepic.anemic{border:1px dashed rgba(239,68,68,.4)}
+.umap-foot{margin-top:12px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.umap-note{font-size:11.5px;color:var(--tx-muted)}
+.umap-note b{color:var(--tx2);font-weight:700}
+/* etapa IA · chat + resumen */
+.chat-head{font-size:13px;color:var(--tx2);margin-bottom:11px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.usm-ia{display:grid;grid-template-columns:1.4fr .8fr;gap:18px;align-items:start}
+.usm-chat{display:flex;flex-direction:column;gap:10px;max-height:clamp(250px,40vh,400px);overflow-y:auto;overscroll-behavior:contain;padding-right:6px;
+  scrollbar-width:thin;scrollbar-color:var(--brand-400) transparent}
+.usm-chat::-webkit-scrollbar{width:8px}
+.usm-chat::-webkit-scrollbar-track{background:transparent}
+.usm-chat::-webkit-scrollbar-thumb{background:rgba(124,58,237,.55);border-radius:9999px;border:2px solid transparent;background-clip:padding-box}
+.usm-chat::-webkit-scrollbar-thumb:hover{background:var(--brand)}
+.cx{display:flex;flex-direction:column;gap:6px}
+.bub{border-radius:13px;padding:9px 13px;font-size:12.5px;line-height:1.42}
+.bub.user{align-self:flex-end;max-width:82%;background:var(--brand-sub);border:1px solid rgba(124,58,237,.3);color:var(--tx);border-bottom-right-radius:4px}
+.bub.ai{align-self:flex-start;max-width:92%;background:var(--s1);border:1px solid var(--border);border-left:2px solid var(--brand);color:var(--tx2);border-bottom-left-radius:4px;display:flex;flex-direction:column;gap:6px;box-shadow:var(--sh-card)}
+.bub.ai .who{font-size:10px;font-weight:700;letter-spacing:.05em;color:var(--brand-300);text-transform:uppercase}
+.kp{display:flex;gap:8px;align-items:flex-start;font-size:12px}
+.kp::before{font-weight:800;flex:none;line-height:1.35}
+.kp.ok::before{content:"✓";color:#34d399}
+.kp.warn::before{content:"⚠";color:var(--owner)}
+.kp b{color:var(--tx);font-weight:700}
+.bub-score{align-self:flex-start;margin-top:1px;border-radius:9999px;padding:3px 11px;font-size:11px;font-weight:700}
+.bub-score.bad{background:rgba(239,68,68,.16);color:#fca5a5}
+.bub-score.good{background:rgba(16,185,129,.16);color:#6ee7b7}
+.ia-summary{background:var(--s1);border-radius:12px;padding:15px 16px;box-shadow:var(--sh-card);display:flex;flex-direction:column;gap:12px}
+.score-arc{display:flex;align-items:center;gap:12px;justify-content:center;margin-top:2px}
+.score-arc .usm-score{font-size:18px;padding:5px 15px}
+.score-arc .arc{color:var(--tx-muted);font-size:18px;font-weight:800}
+.ia-cap{font-size:11px;color:var(--tx-muted);text-align:center;margin-top:-6px}
+.moves{display:flex;flex-direction:column;gap:10px}
+.move{display:flex;gap:10px;align-items:flex-start;font-size:11.5px;color:var(--tx-muted)}
+.move .mv-ic{width:24px;height:24px;border-radius:7px;background:var(--brand-sub);color:var(--brand-300);display:grid;place-items:center;font-size:13px;flex:none}
+.move b{display:block;color:var(--tx);font-size:12px;margin-bottom:1px}
+@media (max-width:760px){.umap,.usm-ia{grid-template-columns:1fr}.bub.user{max-width:92%}}
 
 /* user stories pesadas */
 .us-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:start}
@@ -356,6 +415,14 @@ h1,h2,h3{letter-spacing:-0.02em; line-height:1.12; font-weight:700}
 .ch-legend .sw{width:18px;height:3px;border-radius:2px}
 .ch-legend .sw.dash{background:linear-gradient(90deg,var(--tx-muted) 0 60%,transparent 60%);background-size:9px 3px}
 .charts-2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.burn-view{animation:burnFade var(--dur) var(--ease)}
+.burn-view.hide{display:none}
+@keyframes burnFade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.sprint-legend{display:flex;flex-wrap:wrap;gap:10px 18px;margin-top:14px;justify-content:center}
+.sprint-legend .sl{display:flex;align-items:center;gap:7px;font-size:12.5px;color:var(--tx2);font-weight:600;
+  cursor:pointer;padding:3px 9px;border-radius:9999px;border:1px solid transparent;transition:var(--dur) var(--ease)}
+.sprint-legend .sl:hover{background:var(--s2);border-color:var(--border)}
+.sprint-legend .sl .sw{width:18px;height:3px;border-radius:2px}
 
 /* gridline & axis */
 .gl{stroke:rgba(255,255,255,.06);stroke-width:1}
@@ -718,54 +785,130 @@ h1,h2,h3{letter-spacing:-0.02em; line-height:1.12; font-weight:700}
   <section class="slide" data-sec="gest" data-name="User Story Mapping">
     <div class="slide-inner">
       <div class="kicker"><span class="pip" style="background:var(--owner)"></span> Gestión · User Story Mapping · construido con IA</div>
-      <h2 class="title">De listas sueltas a un mapa con flujo</h2>
+      <h2 class="title">Del primer borrador al USM final, iterando con IA</h2>
       <div class="usm-toolbar">
         <div class="toggle" id="usmToggle">
           <button data-v="before" class="on">Antes</button>
-          <button data-v="after">Después (con IA)</button>
+          <button data-v="ai">Con la IA</button>
+          <button data-v="after">USM final</button>
         </div>
-        <span style="font-size:12.5px;color:var(--tx-muted)">Alterná para ver la evolución →</span>
+        <span style="font-size:12.5px;color:var(--tx-muted)">Seguí la evolución del mapa →</span>
       </div>
       <div class="usm-stage">
+
+        <!-- Etapa 1 · ANTES: el primer mapa, monocromo y disperso (xlsx/pptx) -->
         <div class="usm-view" id="usmBefore">
-          <div class="usm-before">
-            <div>
-              <div class="loose-chips" id="looseChips"></div>
+          <div class="umap antes">
+            <div class="urole2 cli">
+              <div class="urh"><span class="role-dot rc"></span>Conductor<span class="cnt">5 épicas · 48 historias</span></div>
+              <div class="uepic"><div class="uepic-h"><span class="uen">Gestionar usuario</span><span class="uet">14</span></div>
+                <div class="uacts"><span class="uact">Cuenta/Acceso<b>4</b></span><span class="uact">Verificar identidad<b>3</b></span><span class="uact">Cuenta-Perfil<b>7</b></span></div></div>
+              <div class="uepic"><div class="uepic-h"><span class="uen">Reservar vehículo</span><span class="uet">18</span></div>
+                <div class="uacts"><span class="uact">Descubrimiento<b>7</b></span><span class="uact">Reserva<b>2</b></span><span class="uact">Gestión de reserva<b>3</b></span><span class="uact">Pago<b>6</b></span></div></div>
+              <div class="uepic"><div class="uepic-h"><span class="uen">Usar vehículo</span><span class="uet">5</span></div>
+                <div class="uacts"><span class="uact">Uso del vehículo<b>5</b></span></div></div>
+              <div class="uepic"><div class="uepic-h"><span class="uen">Post uso</span><span class="uet">4</span></div>
+                <div class="uacts"><span class="uact">Post Alquiler<b>4</b></span></div></div>
+              <div class="uepic"><div class="uepic-h"><span class="uen">Soporte y sistema</span><span class="uet">7</span></div>
+                <div class="uacts"><span class="uact">Soporte<b>6</b></span><span class="uact">Sistema<b>1</b></span></div></div>
             </div>
-            <div class="before-notes">
-              <div class="bn"><span class="x">✕</span> Nombres ambiguos y palabras sueltas, sin acciones de usuario completas</div>
-              <div class="bn"><span class="x">✕</span> Backbone poco claro (p. ej. "Uso del Vehículo")</div>
-              <div class="bn"><span class="x">✕</span> Funcionalidades sin desmenuzar, mezcladas con acciones grandes</div>
-              <div class="bn"><span class="x">✕</span> Huecos clave: reservas, pagos, cancelaciones, disputas, métricas</div>
+            <div class="urole2 own">
+              <div class="urh"><span class="role-dot ro"></span>Rentador<span class="cnt">6 épicas · 51 historias</span></div>
+              <div class="uepic"><div class="uepic-h"><span class="uen">Gestionar usuario</span><span class="uet">11</span></div>
+                <div class="uacts"><span class="uact">Cuenta/Acceso<b>4</b></span><span class="uact">Verificar identidad<b>3</b></span><span class="uact">Cuenta-Perfil<b>4</b></span></div></div>
+              <div class="uepic"><div class="uepic-h"><span class="uen">Gestionar negocio</span><span class="uet">16</span></div>
+                <div class="uacts"><span class="uact">Gestión de vehículo<b>8</b></span><span class="uact">Configuración comercial<b>8</b></span></div></div>
+              <div class="uepic"><div class="uepic-h"><span class="uen">Gestionar reservas</span><span class="uet">12</span></div>
+                <div class="uacts"><span class="uact">Gestión de reservas<b>6</b></span><span class="uact">Operación del alquiler<b>3</b></span><span class="uact">Post-alquiler<b>3</b></span></div></div>
+              <div class="uepic anemic"><div class="uepic-h"><span class="uen">Cobro y liquidación</span><span class="uet">1</span></div>
+                <div class="uacts"><span class="uact">Post-alquiler<b>1</b></span></div></div>
+              <div class="uepic anemic"><div class="uepic-h"><span class="uen">Analytics</span><span class="uet">2</span></div>
+                <div class="uacts"><span class="uact">Negocio y análisis<b>2</b></span></div></div>
+              <div class="uepic"><div class="uepic-h"><span class="uen">Soporte y sistema</span><span class="uet">9</span></div>
+                <div class="uacts"><span class="uact">Soporte / Sistema<b>9</b></span></div></div>
             </div>
           </div>
+          <div class="umap-foot"><span class="usm-score bad">Inicial · <b>6,5 / 10</b></span><span class="umap-note">Monocromo · épicas dispersas y <b>anémicas</b> (Cobro·1, Analytics·2) · CRUDs sin desagregar</span></div>
         </div>
+
+        <!-- Etapa 2 · CON LA IA: revisión épica por épica (chat + resumen) -->
+        <div class="usm-view hide" id="usmAI">
+          <div class="chat-head">Le pasamos el USM a <b style="color:var(--tx)">Claude</b> y lo revisamos épica por épica.</div>
+          <div class="usm-ia">
+            <div class="usm-chat">
+              <div class="cx">
+                <div class="bub user">Revisá la épica 1 del Conductor: <b>"Gestionar usuario"</b>.</div>
+                <div class="bub ai">
+                  <span class="who">Claude</span>
+                  <span class="kp warn">Nombra la entidad, no la acción → <b>"Gestionar cuenta"</b></span>
+                  <span class="kp warn">"Medios de pago" agrupa un CRUD entero → desagregar</span>
+                  <span class="bub-score bad">6,5 / 10 · base sólida, revisar granularidad</span>
+                </div>
+              </div>
+              <div class="cx">
+                <div class="bub user">Fusionamos "Usar vehículo" + "Post uso" → <b>"Gestionar uso del vehículo"</b>.</div>
+                <div class="bub ai">
+                  <span class="who">Claude</span>
+                  <span class="kp ok">Eran épicas anémicas; ahora un proceso continuo</span>
+                  <span class="kp ok">Las reseñas cierran bien el ciclo en Devolución</span>
+                </div>
+              </div>
+              <div class="cx">
+                <div class="bub user">Rentador: "Reservas" + "Cobro" → <b>"Gestionar alquiler"</b>; "Analytics" → <b>"Analizar negocio"</b>. Calificá el final.</div>
+                <div class="bub ai">
+                  <span class="who">Claude</span>
+                  <span class="kp ok">Estructura por rol, verbos en infinitivo, cobertura completa</span>
+                  <span class="bub-score good">9,5 / 10 · USM maduro, listo para desarrollo</span>
+                </div>
+              </div>
+            </div>
+            <aside class="ia-summary">
+              <div class="score-arc">
+                <span class="usm-score bad"><b>6,5</b></span>
+                <span class="arc">→</span>
+                <span class="usm-score good"><b>9,5</b></span>
+              </div>
+              <div class="ia-cap">Calificación del USM al iterar</div>
+              <div class="moves">
+                <div class="move"><span class="mv-ic">✎</span><div><b>Renombrar épicas</b>"Gestionar usuario" → "Gestionar cuenta"</div></div>
+                <div class="move"><span class="mv-ic">⊟</span><div><b>Desagregar CRUDs</b>"Medios de pago" → 3 US tipadas</div></div>
+                <div class="move"><span class="mv-ic">⛙</span><div><b>Fusionar anémicas</b>Usar+Post uso · Reservas+Cobro</div></div>
+              </div>
+            </aside>
+          </div>
+        </div>
+
+        <!-- Etapa 3 · USM FINAL: potenciado, color por épica (xlsx › USM) -->
         <div class="usm-view hide" id="usmAfter">
-          <div class="usm-after">
-            <div class="usm-role cli">
-              <h4><span class="role-dot rc"></span> Conductor — backbone</h4>
-              <div class="backbone">
-                <div class="bb">Gestionar cuenta</div>
-                <div class="bb">Reservar vehículo</div>
-                <div class="bb">Gestionar uso del vehículo</div>
-                <div class="bb">Solicitar soporte</div>
-              </div>
-              <div class="after-arrows"><span>Acceso · Perfil</span><span>Búsqueda · Reserva · Pagos</span><span>Retiro · Devolución</span><span>Auto-gestión · Contacto</span></div>
+          <div class="umap after">
+            <div class="urole2 cli">
+              <div class="urh"><span class="role-dot rc"></span>Conductor<span class="cnt">4 épicas · 64 historias</span></div>
+              <div class="uepic"><div class="uepic-h"><span class="uen">Gestionar cuenta</span><span class="uet">16</span></div>
+                <div class="uacts"><span class="uact">Acceso a la app<b>6</b></span><span class="uact">Gestión de perfil<b>10</b></span></div></div>
+              <div class="uepic"><div class="uepic-h"><span class="uen">Reservar vehículo</span><span class="uet">31</span></div>
+                <div class="uacts"><span class="uact">Búsqueda<b>13</b></span><span class="uact">Gestión de reserva<b>9</b></span><span class="uact">Gestión de pagos<b>9</b></span></div></div>
+              <div class="uepic"><div class="uepic-h"><span class="uen">Gestionar uso del vehículo</span><span class="uet">11</span></div>
+                <div class="uacts"><span class="uact">Retiro<b>4</b></span><span class="uact">Devolución<b>7</b></span></div></div>
+              <div class="uepic"><div class="uepic-h"><span class="uen">Solicitar soporte</span><span class="uet">6</span></div>
+                <div class="uacts"><span class="uact">Autogestión<b>2</b></span><span class="uact">Contacto<b>4</b></span></div></div>
             </div>
-            <div class="usm-role own">
-              <h4><span class="role-dot ro"></span> Rentador — backbone</h4>
-              <div class="backbone">
-                <div class="bb">Gestionar cuenta</div>
-                <div class="bb">Gestionar negocio</div>
-                <div class="bb">Gestionar alquiler</div>
-                <div class="bb">Analizar negocio</div>
-                <div class="bb">Solicitar soporte</div>
-              </div>
-              <div class="after-arrows"><span>Vehículos · Precios · Políticas</span><span>Reservas · Entrega · Recepción</span><span>Métricas · Historial</span></div>
+            <div class="urole2 own">
+              <div class="urh"><span class="role-dot ro"></span>Rentador<span class="cnt">5 épicas · 73 historias</span></div>
+              <div class="uepic"><div class="uepic-h"><span class="uen">Gestionar cuenta</span><span class="uet">18</span></div>
+                <div class="uacts"><span class="uact">Acceso<b>6</b></span><span class="uact">Gestión de perfil<b>12</b></span></div></div>
+              <div class="uepic"><div class="uepic-h"><span class="uen">Gestionar negocio</span><span class="uet">18</span></div>
+                <div class="uacts"><span class="uact">Vehículos<b>8</b></span><span class="uact">Precios<b>7</b></span><span class="uact">Políticas<b>3</b></span></div></div>
+              <div class="uepic"><div class="uepic-h"><span class="uen">Gestionar alquiler</span><span class="uet">23</span></div>
+                <div class="uacts"><span class="uact">Reserva<b>12</b></span><span class="uact">Entrega<b>4</b></span><span class="uact">Recepción<b>7</b></span></div></div>
+              <div class="uepic"><div class="uepic-h"><span class="uen">Analizar negocio</span><span class="uet">8</span></div>
+                <div class="uacts"><span class="uact">Métricas<b>5</b></span><span class="uact">Historial<b>3</b></span></div></div>
+              <div class="uepic"><div class="uepic-h"><span class="uen">Solicitar soporte</span><span class="uet">6</span></div>
+                <div class="uacts"><span class="uact">Autogestión<b>2</b></span><span class="uact">Contacto<b>4</b></span></div></div>
             </div>
           </div>
-          <p class="lead" style="margin-top:14px;font-size:13.5px">La IA explicó la estructura (backbone → user stories → categorías), detectó huecos y nos llevó a <span class="u-brand">dos USM bien estructurados</span>, listos para definir el MVP y armar el backlog.</p>
+          <div class="umap-foot"><span class="usm-score good">Final · <b>9,5 / 10</b></span><span class="umap-note">De épicas dispersas y anémicas a <b>4–5 por rol</b> · color por épica · CRUDs desagregados · cobertura completa</span></div>
         </div>
+
       </div>
     </div>
   </section>
@@ -830,33 +973,88 @@ h1,h2,h3{letter-spacing:-0.02em; line-height:1.12; font-weight:700}
     </div>
   </section>
 
-  <!-- 13 · SPRINTS · BURN UP / DOWN -->
+  <!-- 13 · SPRINTS · BURN UP / DOWN (3 vistas vía toggle) -->
   <section class="slide" data-sec="gest" data-name="Sprints · Burn-Up / Burn-Down">
     <div class="slide-inner">
       <div class="kicker"><span class="pip" style="background:var(--owner)"></span> Gestión · Sprints · 7 sprints consolidados</div>
-      <h2 class="title">Burn-Up y Burn-Down global</h2>
-      <div class="charts-2" style="margin-top:14px">
-        <div class="chart-card">
-          <h4>Burn-Up — Story Points completados</h4>
-          <div class="ch-sub">Realizado acumulado vs. planificado acumulado · alcance total 290 SP.</div>
-          <svg class="chart-svg" id="burnup" viewBox="0 0 520 280" role="img" aria-label="Burn-up global"></svg>
-          <div class="ch-legend">
-            <span class="cl"><span class="sw" style="background:var(--brand)"></span> Realizado acum.</span>
-            <span class="cl"><span class="sw dash"></span> Planificado acum.</span>
-            <span class="cl"><span class="sw" style="background:var(--tx-dis)"></span> Alcance (290)</span>
-          </div>
+      <h2 class="title">Burn-Up y Burn-Down</h2>
+      <div class="usm-toolbar">
+        <div class="toggle" id="burnViewToggle">
+          <button data-v="weekly" class="on">Global · semanal</button>
+          <button data-v="cross">Cross-sprint · día</button>
+          <button data-v="sprint">Líneas por sprint</button>
         </div>
-        <div class="chart-card">
-          <h4>Burn-Down — Story Points restantes</h4>
-          <div class="ch-sub">Trabajo restante (290 − realizado acum.) vs. ritmo planificado.</div>
-          <svg class="chart-svg" id="burndown" viewBox="0 0 520 280" role="img" aria-label="Burn-down global"></svg>
-          <div class="ch-legend">
-            <span class="cl"><span class="sw" style="background:var(--client)"></span> Restante real</span>
-            <span class="cl"><span class="sw dash"></span> Restante planificado</span>
-          </div>
-        </div>
+        <span style="font-size:12.5px;color:var(--tx-muted)">Elegí la resolución del burn →</span>
       </div>
-      <p class="demo-hint" style="margin-top:12px">Cierre en <b style="color:var(--tx)">290 / 290 SP</b> (100%). El Sprint 7 (recomendaciones + push) entregó sus 18 SP: alcance completo.</p>
+
+      <!-- Vista por defecto: global semanal (cross-sprint, 1 punto por sprint) -->
+      <div class="burn-view" id="burnViewWeekly">
+        <div class="charts-2">
+          <div class="chart-card">
+            <h4>Burn-Up — Story Points completados</h4>
+            <div class="ch-sub">Realizado acumulado vs. planificado acumulado · alcance total 290 SP.</div>
+            <svg class="chart-svg" id="burnup" viewBox="0 0 520 280" role="img" aria-label="Burn-up global"></svg>
+            <div class="ch-legend">
+              <span class="cl"><span class="sw" style="background:var(--brand)"></span> Realizado acum.</span>
+              <span class="cl"><span class="sw dash"></span> Planificado acum.</span>
+              <span class="cl"><span class="sw" style="background:var(--tx-dis)"></span> Alcance (290)</span>
+            </div>
+          </div>
+          <div class="chart-card">
+            <h4>Burn-Down — Story Points restantes</h4>
+            <div class="ch-sub">Trabajo restante (290 − realizado acum.) vs. ritmo planificado.</div>
+            <svg class="chart-svg" id="burndown" viewBox="0 0 520 280" role="img" aria-label="Burn-down global"></svg>
+            <div class="ch-legend">
+              <span class="cl"><span class="sw" style="background:var(--client)"></span> Restante real</span>
+              <span class="cl"><span class="sw dash"></span> Restante planificado</span>
+            </div>
+          </div>
+        </div>
+        <p class="demo-hint" style="margin-top:12px">Cierre en <b style="color:var(--tx)">290 / 290 SP</b> (100%). El Sprint 7 (recomendaciones + push) entregó sus 18 SP: alcance completo.</p>
+      </div>
+
+      <!-- Vista alternativa 1: cross-sprint a nivel día (curva continua sobre los 7 sprints) -->
+      <div class="burn-view hide" id="burnViewCross">
+        <div class="charts-2">
+          <div class="chart-card">
+            <h4>Burn-Up diario · cross-sprint</h4>
+            <div class="ch-sub">SP completados acumulados, día a día, encadenando los 7 sprints.</div>
+            <svg class="chart-svg" id="xdUp" viewBox="0 0 520 280" role="img" aria-label="Burn-up diario cross-sprint"></svg>
+            <div class="ch-legend">
+              <span class="cl"><span class="sw" style="background:var(--brand)"></span> Realizado acum.</span>
+              <span class="cl"><span class="sw dash"></span> Planificado acum.</span>
+            </div>
+          </div>
+          <div class="chart-card">
+            <h4>Burn-Down diario · cross-sprint</h4>
+            <div class="ch-sub">Trabajo restante (290 − realizado acum.), día a día, sobre los 7 sprints.</div>
+            <svg class="chart-svg" id="xdDn" viewBox="0 0 520 280" role="img" aria-label="Burn-down diario cross-sprint"></svg>
+            <div class="ch-legend">
+              <span class="cl"><span class="sw" style="background:var(--client)"></span> Restante real</span>
+              <span class="cl"><span class="sw dash"></span> Restante planificado</span>
+            </div>
+          </div>
+        </div>
+        <p class="demo-hint" style="margin-top:12px">Las líneas verticales separan cada sprint; los cierres de sprint coinciden con el burn semanal y cierran en <b style="color:var(--tx)">290</b>.</p>
+      </div>
+
+      <!-- Vista alternativa 2: una línea por sprint, superpuestas -->
+      <div class="burn-view hide" id="burnViewSprint">
+        <div class="charts-2">
+          <div class="chart-card">
+            <h4>Burn-Down por sprint · superpuesto</h4>
+            <div class="ch-sub">Trabajo restante de cada sprint sobre su propia semana (Inicio → Miércoles).</div>
+            <svg class="chart-svg" id="ovDn" viewBox="0 0 520 280" role="img" aria-label="Burn-down por sprint superpuesto"></svg>
+          </div>
+          <div class="chart-card">
+            <h4>Burn-Up por sprint · superpuesto</h4>
+            <div class="ch-sub">SP completados acumulados de cada sprint sobre su propia semana.</div>
+            <svg class="chart-svg" id="ovUp" viewBox="0 0 520 280" role="img" aria-label="Burn-up por sprint superpuesto"></svg>
+          </div>
+        </div>
+        <div class="sprint-legend" id="sprintLegend"></div>
+        <p class="demo-hint" style="margin-top:8px">Cada color es un sprint (hover en la leyenda o en un punto para aislarlo). Distintos alcances (20–58 SP) y ritmos de cierre en una semana.</p>
+      </div>
     </div>
   </section>
 
@@ -923,7 +1121,7 @@ h1,h2,h3{letter-spacing:-0.02em; line-height:1.12; font-weight:700}
         <p class="cl-sub">Siete sprints, seis personas y una forma de trabajar que sostuvimos hasta el final: planificar al detalle, mantener al equipo cómodo y usar la IA con criterio.</p>
         <div class="cl-stats">
           <div class="cs"><b>290</b><span>de 290 SP entregados</span></div>
-          <div class="cs"><b class="u-brand">7→2</b><span>riesgos mitigados o cerrados</span></div>
+          <div class="cs"><b class="u-brand">6+IA</b><span>el equipo al volante, la IA de copiloto</span></div>
           <div class="cs"><b class="u-client">65</b><span>historias, una visión</span></div>
         </div>
         <div class="team-line" id="teamLine"></div>
@@ -1067,9 +1265,6 @@ const DEMO_PHASES = [
   ]}
 ];
 
-/* USM antes — chips sueltos (representan el estado 'listas sueltas de features' descrito en pptx) */
-const LOOSE = ["login","DNI","favoritos","reservar","pagar","mapa","reseñas","perfil","seña","stock","tickets","precios","entregar auto","extender","cancelar","niveles","QR","disputas","notificaciones","dashboard"];
-
 /* User Stories más pesadas — xlsx › Cronograma (SP por US) */
 const US_HEAVY = [
   ["US-22","Buscar por mapa interactivo",13,"Sprint 3"],
@@ -1108,6 +1303,43 @@ const BD_REAL    = [290,257,215,157,99,55,18,0];    // 290 - REAL_CUM
 const BD_PLAN    = [290,255,215,157,99,42,18,0];    // 290 - PLAN_CUM
 const BU_REAL    = [0,33,75,133,191,235,272,290];
 const BU_PLAN    = [0,35,75,133,191,248,272,290];
+
+/* ── Burn diario (fuente: xlsx › hojas Sprint 1..6 + Sprint n) ──────────────
+   Cada sprint trae filas Pendiente (burn-down), Realizado (por día) y
+   Acumulado (burn-up) sobre 8 puntos: Inicio + Jue..Mié (1 semana). */
+const OV_DAYS = ["Ini","Jue","Vie","Sáb","Dom","Lun","Mar","Mié"];
+/* Pendiente (burn-down) crudo por sprint */
+const OV_BD = {
+  1:[35,35,35,35,31,27,13,5],
+  2:[42,42,42,39,34,27,25,2],
+  3:[58,58,58,45,42,32,10,6],
+  4:[58,58,58,53,25,13,8,0],
+  5:[57,57,57,57,49,39,26,0],
+  6:[37,37,34,34,0,0,0,0],
+  7:[20,20,15,10,5,4,2,1]
+};
+/* Acumulado (burn-up) crudo por sprint */
+const OV_BU = {
+  1:[0,0,0,4,8,22,30,33],
+  2:[0,0,3,8,15,17,40,42],
+  3:[0,0,13,16,26,48,52,58],
+  4:[0,0,5,33,45,50,58,58],
+  5:[0,0,0,8,18,31,57,57],
+  6:[0,3,3,37,37,37,37,37],
+  7:[0,5,10,15,16,18,19,20]
+};
+/* Color por sprint (paleta propia: los tokens --s1..--s4 son superficies, no sprints) */
+const SPRINT_COLORS = ["#7C3AED","#06B6D4","#F59E0B","#10B981","#EF4444","#EC4899","#3B82F6"];
+
+/* Cross-sprint a nivel día (50 pts = S0 + 7 sprints × 7 días).
+   El realizado diario se ancla a los cierres oficiales por sprint (Avance),
+   por eso los hitos de fin de sprint coinciden con el burn semanal y cierra en 290. */
+const XD_BU_REAL = [0,0,0,4,8,22,30,33,33,36,41,48,50,73,75,75,88,91,101,123,127,133,133,138,166,178,183,191,191,191,191,197,205,215,235,235,238,238,272,272,272,272,272,277,281,285,286,288,289,290];
+const XD_BU_PLAN = [0,5,10,15,20,25,30,35,40.7,46.4,52.1,57.9,63.6,69.3,75,83.3,91.6,99.9,108.1,116.4,124.7,133,141.3,149.6,157.9,166.1,174.4,182.7,191,199.1,207.3,215.4,223.6,231.7,239.9,248,251.4,254.9,258.3,261.7,265.1,268.6,272,274.6,277.1,279.7,282.3,284.9,287.4,290];
+const XD_BD_REAL = [290,290,290,286,282,268,260,257,257,254,249,242,240,217,215,215,202,199,189,167,163,157,157,152,124,112,107,99,99,99,99,93,85,75,55,55,52,52,18,18,18,18,18,13,9,5,4,2,1,0];
+const XD_BD_PLAN = [290,285,280,275,270,265,260,255,249.3,243.6,237.9,232.1,226.4,220.7,215,206.7,198.4,190.1,181.9,173.6,165.3,157,148.7,140.4,132.1,123.9,115.6,107.3,99,90.9,82.7,74.6,66.4,58.3,50.1,42,38.6,35.1,31.7,28.3,24.9,21.4,18,15.4,12.9,10.3,7.7,5.1,2.6,0];
+/* etiquetas por día: S0, luego S1·Jue … S7·Mié */
+const XD_LABELS = (()=>{const a=["S0"];for(let s=1;s<=7;s++)for(let d=1;d<=7;d++)a.push("S"+s+"·"+OV_DAYS[d]);return a;})();
 
 /* Workflow IA — WORKFLOW.md */
 const WF = [
@@ -1258,9 +1490,6 @@ $("#demoPhases").innerHTML = DEMO_PHASES.map(ph=>`
   </div>`).join("");
 $$("#demoPhases .step").forEach(st=>st.addEventListener("click",()=>st.classList.toggle("open")));
 
-// loose chips
-$("#looseChips").innerHTML = LOOSE.map((c,i)=>`<span class="lc" style="--r:${(i%5-2)*1.2}deg">${c}</span>`).join("");
-
 // us heavy
 $("#usList").innerHTML = US_HEAVY.map(u=>`
   <div class="us-item">
@@ -1278,7 +1507,7 @@ $("#wfFlow").innerHTML = WF.map(w=>`<div class="wf-step"><div class="wn">${w[0]}
 
 // lessons
 $("#lessons").innerHTML = LESSONS.map(l=>`
-  <div class="lesson">${l.neo?'<span class="new">PROPUESTA</span>':''}
+  <div class="lesson">
     <div class="ln">${l.n}</div><h4>${l.t}</h4><p>${l.p}</p></div>`).join("");
 
 /* ============================================================
@@ -1422,6 +1651,97 @@ function drawAvanceCum(){
     wireHover(svg,hit,[dot],`<b>${SP_LABELS[i]}</b> · Real ${REAL_CUM[i]} · Plan ${PLAN_CUM[i]} SP`);
   });
 }
+/* ── Burn · 3 vistas en una slide (semanal | cross-sprint diario | por sprint) ── */
+let BURN_VIEW="weekly";
+const OVERLAY_GROUPS={};   // svgId -> { sprint: [path, ...dots] }
+
+// eje cross-sprint: grid horizontal + separadores verticales por sprint + banda S1..S7
+function crossAxes(svg,P,ymax,yStep){
+  const {x0,y0,x1,y1}=P, n=50;
+  for(let v=0;v<=ymax;v+=yStep){
+    const y=y0-(v/ymax)*(y0-y1);
+    svg.appendChild(el("line",{x1:x0,y1:y,x2:x1,y2:y,class:"gl"}));
+    svg.appendChild(el("text",{x:x0-8,y:y+4,"text-anchor":"end",class:"axtx"},v));
+  }
+  for(let s=1;s<=7;s++){
+    if(s<7){const xb=xAt(P,7*s,n);
+      svg.appendChild(el("line",{x1:xb,y1:y1,x2:xb,y2:y0,stroke:"var(--tx-dis)","stroke-width":1,"stroke-dasharray":"2 4",opacity:.55}));}
+    const xc=(xAt(P,7*(s-1),n)+xAt(P,7*s,n))/2;
+    svg.appendChild(el("text",{x:xc,y:y0+20,"text-anchor":"middle",class:"axtx b"},"S"+s));
+  }
+}
+function drawCrossDaily(svgId,real,plan,color){
+  const svg=$("#"+svgId);if(!svg)return;clear(svg);
+  const P={x0:40,y0:235,x1:500,y1:22};
+  crossAxes(svg,P,300,50);
+  drawLine(svg,P,plan,300,"var(--tx-muted)",{dash:true,dots:false,width:2});
+  drawLine(svg,P,real,300,color,{width:3,dots:false});
+  real.forEach((v,i)=>{
+    const cx=xAt(P,i,real.length), cy=yAt(P,v,300);
+    const dot=el("circle",{cx,cy,r:0,fill:"var(--bg)",stroke:color,"stroke-width":2.5,class:"dimmable dot"});
+    svg.appendChild(dot);
+    const hit=el("circle",{cx,cy,r:7,fill:"transparent",class:"hit"});
+    svg.appendChild(hit);
+    wireHover(svg,hit,[dot],`<b>${XD_LABELS[i]}</b> · Real ${real[i]} · Plan ${Math.round(plan[i])} SP`);
+  });
+}
+function drawCrossDailyUp(){drawCrossDaily("xdUp",XD_BU_REAL,XD_BU_PLAN,"var(--brand)");}
+function drawCrossDailyDown(){drawCrossDaily("xdDn",XD_BD_REAL,XD_BD_PLAN,"var(--client)");}
+
+// overlay: una línea por sprint (cada color); el hover resalta toda la línea del sprint
+function drawOverlay(svgId,series,verb){
+  const svg=$("#"+svgId);if(!svg)return;clear(svg);
+  const P={x0:36,y0:235,x1:500,y1:22};
+  axes(svg,P,60,OV_DAYS,60,20);
+  const groups={};
+  for(let s=1;s<=7;s++){
+    const data=series[s], color=SPRINT_COLORS[s-1];
+    const line=drawLine(svg,P,data,60,color,{width:2.4,dots:true});
+    const marks=[line.path,...line.dots]; groups[s]=marks;
+    data.forEach((v,i)=>{
+      const hit=el("circle",{cx:xAt(P,i,data.length),cy:yAt(P,v,60),r:9,fill:"transparent",class:"hit"});
+      svg.appendChild(hit);
+      wireHover(svg,hit,marks,`<b>Sprint ${s} · ${OV_DAYS[i]}</b> · ${verb} ${v} SP`);
+    });
+  }
+  OVERLAY_GROUPS[svgId]=groups;
+}
+function drawOverlayDown(){drawOverlay("ovDn",OV_BD,"Restante");}
+function drawOverlayUp(){drawOverlay("ovUp",OV_BU,"Completado");}
+
+// leyenda compartida S1..S7 — hover resalta ese sprint en ambos overlays
+function renderSprintLegend(){
+  const box=$("#sprintLegend");if(!box)return;
+  if(!box.dataset.done){
+    box.innerHTML=SPRINT_COLORS.map((c,i)=>`<span class="sl" data-s="${i+1}"><span class="sw" style="background:${c}"></span>Sprint ${i+1}</span>`).join("");
+    box.dataset.done="1";
+    $$(".sl",box).forEach(chip=>{
+      const s=+chip.dataset.s;
+      const set=on=>["ovDn","ovUp"].forEach(id=>{
+        const svg=$("#"+id), g=OVERLAY_GROUPS[id];
+        if(!svg||!g||!g[s])return;
+        svg.classList.toggle("dim",on); g[s].forEach(m=>m.classList.toggle("on",on));
+      });
+      chip.addEventListener("mouseenter",()=>set(true));
+      chip.addEventListener("mouseleave",()=>set(false));
+    });
+  }
+}
+
+function drawBurnViews(){
+  if(BURN_VIEW==="cross"){drawCrossDailyUp();drawCrossDailyDown();}
+  else if(BURN_VIEW==="sprint"){drawOverlayDown();drawOverlayUp();renderSprintLegend();}
+  else{drawBurnUp();drawBurnDown();}
+}
+function setBurnView(v){
+  BURN_VIEW=v;
+  $$("#burnViewToggle button").forEach(b=>b.classList.toggle("on",b.dataset.v===v));
+  $("#burnViewWeekly").classList.toggle("hide",v!=="weekly");
+  $("#burnViewCross").classList.toggle("hide",v!=="cross");
+  $("#burnViewSprint").classList.toggle("hide",v!=="sprint");
+  drawBurnViews();
+}
+
 function drawRiskChart(activeId){
   const svg=$("#riskChart");clear(svg);
   const P={x0:46,y0:262,x1:606,y1:24};
@@ -1533,8 +1853,12 @@ $$("#usmToggle button").forEach(b=>b.addEventListener("click",()=>{
   const v=b.dataset.v;
   $$("#usmToggle button").forEach(x=>x.classList.toggle("on",x===b));
   $("#usmBefore").classList.toggle("hide",v!=="before");
+  $("#usmAI").classList.toggle("hide",v!=="ai");
   $("#usmAfter").classList.toggle("hide",v!=="after");
 }));
+
+// Burn · toggle de vistas alternativas
+$$("#burnViewToggle button").forEach(b=>b.addEventListener("click",()=>setBurnView(b.dataset.v)));
 
 /* ============================================================
    NAVEGACIÓN
@@ -1552,7 +1876,7 @@ dots.forEach(d=>d.addEventListener("click",()=>go(+d.dataset.i)));
 let ovBuilt=false, ovW=0;
 function buildOverview(){
   // dibujar los charts antes de clonar para que aparezcan en las miniaturas
-  drawCronChart();drawBurnUp();drawBurnDown();drawAvanceBars();drawAvanceCum();drawRiskChart(null);renderFeat(FEAT_ACTIVE);
+  drawCronChart();drawBurnViews();drawAvanceBars();drawAvanceCum();drawRiskChart(null);renderFeat(FEAT_ACTIVE);
   const sw=window.innerWidth, sh=window.innerHeight;
   const TW=300, scale=TW/sw, th=Math.round(sh*scale);
   const grid=$("#ovGrid"); grid.innerHTML="";
@@ -1588,7 +1912,7 @@ function triggerSlide(i){
   const name=slides[i].dataset.name;
   if(name.includes("Features")) renderFeat(FEAT_ACTIVE);
   if(name.includes("Cronograma")) drawCronChart();
-  if(name.includes("Burn")) {drawBurnUp();drawBurnDown();}
+  if(name.includes("Burn")) drawBurnViews();
   if(name.includes("Avance")) {drawAvanceBars();drawAvanceCum();}
   if(name.includes("Riesgos")) {drawRiskChart(null);}
 }
