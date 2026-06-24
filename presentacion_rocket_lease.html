@@ -82,10 +82,10 @@ h1,h2,h3{letter-spacing:-0.02em; line-height:1.12; font-weight:700}
 .brandmark .logo{width:28px;height:28px;border-radius:7px;background:var(--logo) center/cover no-repeat;
   box-shadow:0 2px 8px rgba(0,0,0,.4)}
 .brandmark b{font-weight:700;font-size:15px;letter-spacing:-0.01em}
-.brandmark .sec{color:var(--tx-muted);font-size:12.5px;font-weight:500;margin-left:6px}
-.brandmark .sec b{color:var(--tx2);font-weight:600}
+.brandmark .sep{color:var(--tx-muted);font-size:12.5px;font-weight:500}
+.brandmark .sec{color:var(--tx2);font-size:12.5px;font-weight:600}
 .chrome-right{display:flex;align-items:center;gap:14px;pointer-events:auto}
-.counter{font-variant-numeric:tabular-nums;font-size:13px;color:var(--tx2);font-weight:600}
+.counter{position:fixed;right:24px;bottom:18px;z-index:55;font-variant-numeric:tabular-nums;font-size:13px;color:var(--tx2);font-weight:600;pointer-events:none}
 .counter span{color:var(--tx-muted);font-weight:500}
 .iconbtn{width:34px;height:34px;border-radius:9999px;border:1px solid var(--border);background:var(--s1);
   color:var(--tx2);cursor:pointer;font-size:14px;display:grid;place-items:center;transition:var(--dur) var(--ease)}
@@ -112,13 +112,17 @@ h1,h2,h3{letter-spacing:-0.02em; line-height:1.12; font-weight:700}
 /* ============================================================
    DECK / SLIDES
    ============================================================ */
-.deck{position:fixed;inset:0;z-index:10}
+.deck{position:fixed;inset:0;z-index:45}
 .slide{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;
-  padding:74px clamp(28px,5vw,90px) 80px;opacity:0;visibility:hidden;
+  padding:74px clamp(28px,5vw,90px) 80px;opacity:0;visibility:hidden;pointer-events:none;
   transform:translateX(60px);transition:opacity var(--dur) var(--ease),transform var(--dur) var(--ease);
   overflow:hidden}
 .slide.active{opacity:1;visibility:visible;transform:translateX(0)}
 .slide.prev{transform:translateX(-60px)}
+/* El deck va por encima de las clickzones: solo el contenido interactivo captura
+   clicks; las zonas vacías del slide los dejan pasar a las clickzones del borde. */
+.slide.active button,.slide.active a,.slide.active svg,
+.slide.active .step,.slide.active .rl-item,.slide.active .persona{pointer-events:auto}
 .slide-inner{width:100%;max-width:var(--maxw);margin:0 auto;width:100%}
 
 /* tipografía de slide */
@@ -343,7 +347,7 @@ h1,h2,h3{letter-spacing:-0.02em; line-height:1.12; font-weight:700}
 .cron-table td.fn{color:var(--tx2);font-size:12px}
 
 /* gráficos */
-.chart-card{background:var(--s1);border-radius:12px;padding:18px 20px 14px;box-shadow:var(--sh-card)}
+.chart-card{background:var(--s1);border-radius:12px;padding:18px 20px 14px;box-shadow:var(--sh-card);position:relative}
 .chart-card h4{font-size:14.5px;margin-bottom:2px;letter-spacing:0}
 .chart-card .ch-sub{font-size:11.5px;color:var(--tx-muted);margin-bottom:8px}
 .chart-svg{width:100%;height:auto;display:block;overflow:visible}
@@ -357,6 +361,18 @@ h1,h2,h3{letter-spacing:-0.02em; line-height:1.12; font-weight:700}
 .gl{stroke:rgba(255,255,255,.06);stroke-width:1}
 .axtx{fill:var(--tx-muted);font-size:11px;font-weight:500}
 .axtx.b{fill:var(--tx2);font-weight:600}
+
+/* ---- Gráficos interactivos: hover en punto/barra resalta y atenúa el resto + tooltip ---- */
+.chart-svg .dimmable{transition:opacity .16s var(--ease),r .14s var(--ease)}
+.chart-svg.dim .dimmable{opacity:.15}
+.chart-svg.dim .dimmable.on{opacity:1}
+.chart-svg .dot.on{r:6}
+.chart-svg .hit{cursor:pointer}
+.ctip{position:absolute;left:0;top:0;transform:translate(-50%,calc(-100% - 9px));background:var(--s3);
+  border:1px solid var(--border);border-radius:9px;padding:6px 10px;font-size:11.5px;line-height:1.32;color:var(--tx);
+  white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .12s;z-index:6;box-shadow:var(--sh-card)}
+.ctip.show{opacity:1}
+.ctip b{color:var(--tx);font-weight:700}
 
 /* workflow IA */
 .wf-head{display:flex;align-items:center;justify-content:space-between;gap:24px}
@@ -378,7 +394,8 @@ h1,h2,h3{letter-spacing:-0.02em; line-height:1.12; font-weight:700}
    RIESGOS
    ============================================================ */
 .risk-wrap{display:grid;grid-template-columns:1.3fr .7fr;gap:22px;align-items:start}
-.risk-chart-card{background:var(--s1);border-radius:12px;padding:18px 20px 12px;box-shadow:var(--sh-card)}
+.risk-chart-card{background:var(--s1);border-radius:12px;padding:18px 20px 12px;box-shadow:var(--sh-card);position:relative}
+.risk-hit{cursor:pointer}
 .risk-legend{display:flex;flex-direction:column;gap:7px;margin-top:2px}
 .rl-item{display:flex;align-items:center;gap:10px;font-size:12.5px;cursor:pointer;padding:7px 10px;border-radius:10px;
   background:var(--s1);box-shadow:var(--sh-card);transition:var(--dur) var(--ease);border:1px solid transparent}
@@ -458,16 +475,19 @@ h1,h2,h3{letter-spacing:-0.02em; line-height:1.12; font-weight:700}
 .overview.show{opacity:1;visibility:visible}
 .ov-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px}
 .ov-head h3{font-size:20px}
-.ov-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px;max-width:1300px;margin:0 auto}
-.ov-card{background:var(--s1);border-radius:12px;padding:15px;cursor:pointer;border:1px solid var(--border);
-  transition:var(--dur) var(--ease);text-align:left;color:var(--tx);font-family:inherit;min-height:96px;
-  display:flex;flex-direction:column;justify-content:space-between}
-.ov-card:hover{background:var(--s2);transform:translateY(-3px)}
-.ov-card.current{box-shadow:inset 0 0 0 2px var(--brand)}
-.ov-card .on{font-size:11px;font-weight:700;color:var(--tx-muted)}
-.ov-card .ot{font-weight:600;font-size:13.5px;line-height:1.25;margin-top:6px}
-.ov-card .os{font-size:10.5px;font-weight:700;margin-top:auto;padding-top:8px}
-.os.s-intro{color:var(--brand-300)} .os.s-demo{color:var(--client)} .os.s-gest{color:var(--owner)} .os.s-cierre{color:var(--success)}
+.ov-grid{display:grid;grid-template-columns:repeat(auto-fill,300px);gap:18px;justify-content:center;max-width:1320px;margin:0 auto}
+.ov-card{background:var(--s1);border-radius:12px;padding:0;cursor:pointer;border:1px solid var(--border);overflow:hidden;
+  transition:var(--dur) var(--ease);text-align:left;color:var(--tx);font-family:inherit;display:flex;flex-direction:column}
+.ov-card:hover{transform:translateY(-3px);border-color:var(--brand-400)}
+.ov-card.current{box-shadow:0 0 0 2px var(--brand);border-color:var(--brand)}
+.ov-thumb{position:relative;width:100%;overflow:hidden;background:var(--bg);border-bottom:1px solid var(--border)}
+.ov-thumb .slide{box-shadow:none}
+.ov-thumb *{pointer-events:none!important}
+.ov-label{display:flex;align-items:center;gap:8px;padding:9px 12px}
+.ov-label .dotc{width:8px;height:8px;border-radius:50%;flex:none}
+.ov-label .on{font-size:11px;font-weight:700;color:var(--tx-muted);font-variant-numeric:tabular-nums}
+.ov-label .ot{font-weight:600;font-size:12.5px;line-height:1.2;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dotc.s-intro{background:var(--brand-300)} .dotc.s-demo{background:var(--client)} .dotc.s-gest{background:var(--owner)} .dotc.s-cierre{background:var(--success)}
 
 /* ============================================================
    HELP
@@ -514,14 +534,15 @@ h1,h2,h3{letter-spacing:-0.02em; line-height:1.12; font-weight:700}
   <div class="brandmark">
     <span class="logo" role="img" aria-label="Rocket Lease"></span>
     <b>Rocket Lease</b>
-    <span class="sec">· <b id="secName">Portada</b></span>
+    <span class="sep">·</span>
+    <b class="sec" id="secName">Portada</b>
   </div>
   <div class="chrome-right">
-    <div class="counter"><span id="cur">1</span> / <span id="tot">17</span></div>
     <button class="iconbtn" id="btnOverview" title="Vista general (O)" aria-label="Vista general">▦</button>
     <button class="iconbtn" id="btnHelp" title="Atajos de teclado (?)" aria-label="Ayuda">?</button>
   </div>
 </div>
+<div class="counter"><span id="cur">1</span> / <span id="tot">17</span></div>
 
 <div class="clickzone left" id="czLeft"><div class="arrow">‹</div></div>
 <div class="clickzone right" id="czRight"><div class="arrow">›</div></div>
@@ -835,7 +856,7 @@ h1,h2,h3{letter-spacing:-0.02em; line-height:1.12; font-weight:700}
           </div>
         </div>
       </div>
-      <p class="demo-hint" style="margin-top:12px">Cierre en <b style="color:var(--tx)">272 / 290 SP</b> (≈94%). Los 18 SP del Sprint 7 (recomendaciones + push) quedaron como alcance no realizado.</p>
+      <p class="demo-hint" style="margin-top:12px">Cierre en <b style="color:var(--tx)">290 / 290 SP</b> (100%). El Sprint 7 (recomendaciones + push) entregó sus 18 SP: alcance completo.</p>
     </div>
   </section>
 
@@ -864,7 +885,7 @@ h1,h2,h3{letter-spacing:-0.02em; line-height:1.12; font-weight:700}
           </div>
         </div>
       </div>
-      <p class="demo-hint" style="margin-top:12px">Sprint 5 sub-entregó (44/57) y el Sprint 6 absorbió el carryover (37/24): para el cierre del Sprint 6 lo acumulado real igualó al plan (272 = 272).</p>
+      <p class="demo-hint" style="margin-top:12px">Sprint 5 sub-entregó (44/57) y el Sprint 6 absorbió el carryover (37/24): desde el cierre del Sprint 6 lo acumulado real igualó al plan, y el Sprint 7 cerró el alcance completo (290 = 290).</p>
     </div>
   </section>
 
@@ -899,9 +920,9 @@ h1,h2,h3{letter-spacing:-0.02em; line-height:1.12; font-weight:700}
     <div class="slide-inner">
       <div class="closing">
         <h2>No construimos solo una app.<br>Construimos un <span class="u-brand">método</span>.</h2>
-        <p class="cl-sub">Siete sprints, seis personas frente al teclado, una sola dirección: hacia adelante, sin frenos. Rocket Lease es la prueba de que con planificación al detalle, dinámicas de equipo sanas e IA bien usada, un grupo chico entrega como uno grande.</p>
+        <p class="cl-sub">Siete sprints, seis personas y una forma de trabajar que sostuvimos hasta el final: planificar al detalle, mantener al equipo cómodo y usar la IA con criterio.</p>
         <div class="cl-stats">
-          <div class="cs"><b>272</b><span>de 290 SP entregados</span></div>
+          <div class="cs"><b>290</b><span>de 290 SP entregados</span></div>
           <div class="cs"><b class="u-brand">7→2</b><span>riesgos mitigados o cerrados</span></div>
           <div class="cs"><b class="u-client">65</b><span>historias, una visión</span></div>
         </div>
@@ -1078,14 +1099,14 @@ const CRON = [
 const SP_LABELS = ["S1","S2","S3","S4","S5","S6","S7"];
 const PLAN      = [35,40,58,58,57,24,18];
 const PLAN_CUM  = [35,75,133,191,248,272,290];
-const REAL      = [33,42,58,58,44,37,0];
-const REAL_CUM  = [33,75,133,191,235,272,272];
+const REAL      = [33,42,58,58,44,37,18];
+const REAL_CUM  = [33,75,133,191,235,272,290];
 const SCOPE = 290;
 /* Burn-down: restante = 290 - acumulado (incluye punto inicial S0=290) */
 const BD_LABELS  = ["S0","S1","S2","S3","S4","S5","S6","S7"];
-const BD_REAL    = [290,257,215,157,99,55,18,18];   // 290 - REAL_CUM
+const BD_REAL    = [290,257,215,157,99,55,18,0];    // 290 - REAL_CUM
 const BD_PLAN    = [290,255,215,157,99,42,18,0];    // 290 - PLAN_CUM
-const BU_REAL    = [0,33,75,133,191,235,272,272];
+const BU_REAL    = [0,33,75,133,191,235,272,290];
 const BU_PLAN    = [0,35,75,133,191,248,272,290];
 
 /* Workflow IA — WORKFLOW.md */
@@ -1269,6 +1290,22 @@ const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 function clear(svg){while(svg.firstChild)svg.removeChild(svg.firstChild);}
 
+// Tooltip + resaltado: al hover en un punto/barra se ilumina y el resto se atenúa.
+function chartTip(card){let t=card.querySelector(".ctip");if(!t){t=document.createElement("div");t.className="ctip";card.appendChild(t);}return t;}
+function wireHover(svg,hit,marks,html){
+  const card=svg.closest(".chart-card"); if(!card)return; const tip=chartTip(card);
+  const enter=()=>{
+    svg.classList.add("dim"); marks.forEach(m=>m.classList.add("on"));
+    tip.innerHTML=html;
+    const cr=card.getBoundingClientRect(), hr=hit.getBoundingClientRect();
+    tip.style.left=(hr.left+hr.width/2-cr.left)+"px";
+    tip.style.top=(hr.top-cr.top)+"px";
+    tip.classList.add("show");
+  };
+  const leave=()=>{svg.classList.remove("dim"); marks.forEach(m=>m.classList.remove("on")); tip.classList.remove("show");};
+  hit.addEventListener("mouseenter",enter); hit.addEventListener("mouseleave",leave);
+}
+
 // genérico: ejes con grid horizontal. mode 'line' (labels en extremos) o 'band' (labels centrados en banda)
 function axes(svg, P, maxY, labels, ymax, yStep, mode='line'){
   const {x0,y0,x1,y1}=P;
@@ -1293,7 +1330,7 @@ function linePath(P,data,ymax){
 }
 function drawLine(svg,P,data,ymax,color,{dash,width=3,dots=true,anim=true}={}){
   const d=linePath(P,data,ymax);
-  const path=el("path",{d,fill:"none",stroke:color,"stroke-width":width,"stroke-linejoin":"round","stroke-linecap":"round"});
+  const path=el("path",{d,fill:"none",stroke:color,"stroke-width":width,"stroke-linejoin":"round","stroke-linecap":"round",class:"dimmable"});
   if(dash)path.setAttribute("stroke-dasharray","6 6");
   svg.appendChild(path);
   if(anim && !dash && !reduceMotion){
@@ -1302,11 +1339,12 @@ function drawLine(svg,P,data,ymax,color,{dash,width=3,dots=true,anim=true}={}){
     path.style.transition="stroke-dashoffset 1100ms var(--ease)";
     requestAnimationFrame(()=>{path.getBoundingClientRect();path.style.strokeDashoffset=0;});
   }
+  const dotEls=[];
   if(dots){data.forEach((v,i)=>{
-    const c=el("circle",{cx:xAt(P,i,data.length),cy:yAt(P,v,ymax),r:3.5,fill:"var(--bg)",stroke:color,"stroke-width":2.5});
-    svg.appendChild(c);
+    const c=el("circle",{cx:xAt(P,i,data.length),cy:yAt(P,v,ymax),r:3.5,fill:"var(--bg)",stroke:color,"stroke-width":2.5,class:"dimmable dot"});
+    svg.appendChild(c); dotEls.push(c);
   });}
-  return path;
+  return {path,dots:dotEls};
 }
 
 let chartsDrawn={};
@@ -1317,12 +1355,13 @@ function drawCronChart(){
   const n=PLAN.length, bw=(P.x1-P.x0)/n*0.5;
   PLAN.forEach((v,i)=>{
     const x=bandCenter(P,i,n), h=(v/60)*(P.y0-P.y1), y=P.y0-h;
-    const r=el("rect",{x:x-bw/2,y:P.y0,width:bw,height:0,rx:5,fill:"var(--brand)"});
+    const r=el("rect",{x:x-bw/2,y:P.y0,width:bw,height:0,rx:5,fill:"var(--brand)",class:"dimmable hit"});
     svg.appendChild(r);
     svg.appendChild(el("text",{x,y:y-7,"text-anchor":"middle",class:"axtx b",fill:"#fff"},v));
     if(reduceMotion){r.setAttribute("y",y);r.setAttribute("height",h);}
     else{r.style.transition=`y 700ms var(--ease) ${i*70}ms,height 700ms var(--ease) ${i*70}ms`;
       requestAnimationFrame(()=>{r.setAttribute("y",y);r.setAttribute("height",h);});}
+    wireHover(svg,r,[r],`<b>Sprint ${CRON[i][0]} · ${v} SP</b><br>${CRON[i][1]} historias`);
   });
 }
 function drawBurnUp(){
@@ -1333,14 +1372,24 @@ function drawBurnUp(){
   const ys=yAt(P,SCOPE,300);
   svg.appendChild(el("line",{x1:P.x0,y1:ys,x2:P.x1,y2:ys,stroke:"var(--tx-dis)","stroke-width":1.5,"stroke-dasharray":"2 5"}));
   drawLine(svg,P,BU_PLAN,300,"var(--tx-muted)",{dash:true,dots:false,width:2});
-  drawLine(svg,P,BU_REAL,300,"var(--brand)",{width:3.2});
+  const real=drawLine(svg,P,BU_REAL,300,"var(--brand)",{width:3.2});
+  real.dots.forEach((dot,i)=>{
+    const hit=el("circle",{cx:xAt(P,i,BU_REAL.length),cy:yAt(P,BU_REAL[i],300),r:13,fill:"transparent",class:"hit"});
+    svg.appendChild(hit);
+    wireHover(svg,hit,[dot],`<b>${BD_LABELS[i]}</b> · Real ${BU_REAL[i]} · Plan ${BU_PLAN[i]} SP`);
+  });
 }
 function drawBurnDown(){
   const svg=$("#burndown");clear(svg);
   const P={x0:40,y0:235,x1:500,y1:22};
   axes(svg,P,300,BD_LABELS,300,50);
   drawLine(svg,P,BD_PLAN,300,"var(--tx-muted)",{dash:true,dots:false,width:2});
-  drawLine(svg,P,BD_REAL,300,"var(--client)",{width:3.2});
+  const real=drawLine(svg,P,BD_REAL,300,"var(--client)",{width:3.2});
+  real.dots.forEach((dot,i)=>{
+    const hit=el("circle",{cx:xAt(P,i,BD_REAL.length),cy:yAt(P,BD_REAL[i],300),r:13,fill:"transparent",class:"hit"});
+    svg.appendChild(hit);
+    wireHover(svg,hit,[dot],`<b>${BD_LABELS[i]}</b> · Restante ${BD_REAL[i]} · Plan ${BD_PLAN[i]} SP`);
+  });
 }
 function drawAvanceBars(){
   const svg=$("#avanceBars");clear(svg);
@@ -1349,14 +1398,15 @@ function drawAvanceBars(){
   const n=PLAN.length, bw=(P.x1-P.x0)/n*0.30;
   for(let i=0;i<n;i++){
     const cx=bandCenter(P,i,n);
-    [[PLAN[i],"var(--s4)",-1],[REAL[i],"var(--brand)",1]].forEach(([v,col,side])=>{
+    [[PLAN[i],"var(--s4)",-1,"Planificado"],[REAL[i],"var(--brand)",1,"Realizado"]].forEach(([v,col,side,lbl])=>{
       const h=(v/60)*(P.y0-P.y1), y=P.y0-h;
       const xx = side<0 ? cx-bw-1 : cx+1;
-      const r=el("rect",{x:xx,y:P.y0,width:bw,height:0,rx:4,fill:col});
+      const r=el("rect",{x:xx,y:P.y0,width:bw,height:0,rx:4,fill:col,class:"dimmable hit"});
       svg.appendChild(r);
       if(reduceMotion){r.setAttribute("y",y);r.setAttribute("height",h);}
       else{r.style.transition=`y 650ms var(--ease) ${i*60}ms,height 650ms var(--ease) ${i*60}ms`;
         requestAnimationFrame(()=>{r.setAttribute("y",y);r.setAttribute("height",h);});}
+      wireHover(svg,r,[r],`<b>${SP_LABELS[i]}</b> · ${lbl} ${v} SP`);
     });
   }
 }
@@ -1365,7 +1415,12 @@ function drawAvanceCum(){
   const P={x0:40,y0:235,x1:500,y1:22};
   axes(svg,P,300,SP_LABELS,300,50);
   drawLine(svg,P,PLAN_CUM,300,"var(--tx-muted)",{dash:true,dots:false,width:2});
-  drawLine(svg,P,REAL_CUM,300,"var(--brand)",{width:3.2});
+  const real=drawLine(svg,P,REAL_CUM,300,"var(--brand)",{width:3.2});
+  real.dots.forEach((dot,i)=>{
+    const hit=el("circle",{cx:xAt(P,i,REAL_CUM.length),cy:yAt(P,REAL_CUM[i],300),r:13,fill:"transparent",class:"hit"});
+    svg.appendChild(hit);
+    wireHover(svg,hit,[dot],`<b>${SP_LABELS[i]}</b> · Real ${REAL_CUM[i]} · Plan ${PLAN_CUM[i]} SP`);
+  });
 }
 function drawRiskChart(activeId){
   const svg=$("#riskChart");clear(svg);
@@ -1397,14 +1452,33 @@ function drawRiskChart(activeId){
         if(rk.kind!=='opp'){path.style.strokeDashoffset=len;path.style.transition="stroke-dashoffset 900ms var(--ease)";requestAnimationFrame(()=>{path.getBoundingClientRect();path.style.strokeDashoffset=0;});}}
     }
     seg.forEach(p=>{
-      const c=el("circle",{cx:xAt(P,p[0],5),cy:yAt(P,p[1],ymax),r:dim?2.5:4.5,fill:rk.color,opacity:dim?0.3:1,class:"risk-pt"});
-      c.dataset.id=rk.id;
-      c.addEventListener("dblclick",()=>openRisk(rk.id));
-      c.addEventListener("click",()=>{drawRiskChart(rk.id);highlightLegend(rk.id);});
+      const cx=xAt(P,p[0],5), cy=yAt(P,p[1],ymax);
+      const baseR=dim?2.5:4.5;
+      const c=el("circle",{cx,cy,r:baseR,fill:rk.color,opacity:dim?0.3:1,class:"risk-pt"});
       svg.appendChild(c);
+      // hit-circle invisible más grande: facilita hover/click; muestra tooltip y agranda el punto.
+      const hit=el("circle",{cx,cy,r:12,fill:"transparent",class:"risk-hit"});
+      hit.dataset.id=rk.id;
+      hit.addEventListener("dblclick",()=>openRisk(rk.id));
+      hit.addEventListener("click",()=>{drawRiskChart(rk.id);highlightLegend(rk.id);});
+      hit.addEventListener("mouseenter",()=>{
+        c.setAttribute("r",dim?4:7);
+        const tip=riskTip(svg);
+        tip.innerHTML=`<b>R${rk.id} · ${RISK_SPRINTS[p[0]]}</b><br>${rk.name} · expos. ${p[1].toFixed(2).replace('.',',')}`;
+        const cr=svg.closest(".risk-chart-card").getBoundingClientRect(), hr=hit.getBoundingClientRect();
+        tip.style.left=(hr.left+hr.width/2-cr.left)+"px";
+        tip.style.top=(hr.top-cr.top)+"px";
+        tip.classList.add("show");
+      });
+      hit.addEventListener("mouseleave",()=>{
+        c.setAttribute("r",baseR);
+        const t=svg.closest(".risk-chart-card").querySelector(".ctip");if(t)t.classList.remove("show");
+      });
+      svg.appendChild(hit);
     });
   });
 }
+function riskTip(svg){const card=svg.closest(".risk-chart-card");let t=card.querySelector(".ctip");if(!t){t=document.createElement("div");t.className="ctip";card.appendChild(t);}return t;}
 function highlightLegend(id){
   $$("#riskLegend .rl-item").forEach(it=>it.style.outline = (+it.dataset.id===id)?"1px solid var(--border)":"");
 }
@@ -1474,13 +1548,40 @@ dotsEl.innerHTML=slides.map((s,i)=>`<button class="dot" role="tab" aria-label="S
 const dots=$$(".dot",dotsEl);
 dots.forEach(d=>d.addEventListener("click",()=>go(+d.dataset.i)));
 
-// overview grid
-$("#ovGrid").innerHTML=slides.map((s,i)=>`
-  <button class="ov-card" data-i="${i}">
-    <div><span class="on">${String(i+1).padStart(2,'0')}</span><div class="ot">${s.dataset.name}</div></div>
-    <div class="os s-${s.dataset.sec}">${SEC_NAMES[s.dataset.sec]}</div>
-  </button>`).join("");
-$$(".ov-card").forEach(c=>c.addEventListener("click",()=>{go(+c.dataset.i);closeOverview();}));
+// overview — galería de miniaturas (clones escalados de cada slide)
+let ovBuilt=false, ovW=0;
+function buildOverview(){
+  // dibujar los charts antes de clonar para que aparezcan en las miniaturas
+  drawCronChart();drawBurnUp();drawBurnDown();drawAvanceBars();drawAvanceCum();drawRiskChart(null);renderFeat(FEAT_ACTIVE);
+  const sw=window.innerWidth, sh=window.innerHeight;
+  const TW=300, scale=TW/sw, th=Math.round(sh*scale);
+  const grid=$("#ovGrid"); grid.innerHTML="";
+  // clonar en el próximo frame: deja que las animaciones de los charts fijen sus atributos finales
+  requestAnimationFrame(()=>{
+    slides.forEach((s,i)=>{
+      const card=document.createElement("div");
+      card.className="ov-card"+(i===cur?" current":""); card.dataset.i=i;
+      card.setAttribute("role","button"); card.tabIndex=0;
+      const thumb=document.createElement("div");
+      thumb.className="ov-thumb"; thumb.style.height=th+"px";
+      const clone=s.cloneNode(true);
+      clone.classList.remove("prev"); clone.classList.add("active");
+      clone.removeAttribute("id");
+      clone.querySelectorAll("[id]").forEach(e=>e.removeAttribute("id"));
+      clone.querySelectorAll("path").forEach(p=>{p.style.strokeDashoffset="0";p.style.transition="none";});
+      clone.style.cssText="position:absolute;top:0;left:0;width:"+sw+"px;height:"+sh+"px;opacity:1;visibility:visible;transform:scale("+scale+");transform-origin:top left;transition:none";
+      thumb.appendChild(clone);
+      const lab=document.createElement("div");
+      lab.className="ov-label";
+      lab.innerHTML=`<span class="dotc s-${s.dataset.sec}"></span><span class="on">${String(i+1).padStart(2,'0')}</span><span class="ot">${s.dataset.name}</span>`;
+      card.appendChild(thumb); card.appendChild(lab);
+      card.addEventListener("click",()=>{go(+card.dataset.i);closeOverview();});
+      card.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();go(+card.dataset.i);closeOverview();}});
+      grid.appendChild(card);
+    });
+  });
+  ovBuilt=true; ovW=sw;
+}
 
 // charts trigger por slide (por data-name, robusto al reordenamiento)
 function triggerSlide(i){
@@ -1540,7 +1641,7 @@ document.addEventListener("keydown",e=>{
 });
 
 // overview
-function openOverview(){$("#overview").classList.add("show");$("#overview").setAttribute("aria-hidden","false");}
+function openOverview(){if(!ovBuilt||ovW!==window.innerWidth)buildOverview();$("#overview").classList.add("show");$("#overview").setAttribute("aria-hidden","false");}
 function closeOverview(){$("#overview").classList.remove("show");$("#overview").setAttribute("aria-hidden","true");}
 $("#btnOverview").addEventListener("click",()=>{$("#overview").classList.contains("show")?closeOverview():openOverview();});
 $("#ovClose").addEventListener("click",closeOverview);

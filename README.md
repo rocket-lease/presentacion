@@ -51,7 +51,7 @@ presentacion/
 
 Todos los números salen de los artefactos reales, no hay cifras inventadas:
 
-- **Sprints / Avance / Burn-Up / Burn-Down** → pestaña `Avance` de `material/artefactos/Artefactos_RocketLease.xlsx` (290 SP planificados · 272 realizados).
+- **Sprints / Avance / Burn-Up / Burn-Down** → pestaña `Avance` de `material/artefactos/Artefactos_RocketLease.xlsx` (290 SP planificados · 290 realizados, con el Sprint 7 cerrado).
 - **Riesgos** → evolución de `material/imagenes_riesgos/Riesgos_Sprint*.png` + estado final de la pestaña `Análisis de Riesgos` del xlsx.
 - **Features ↔ Personas, Cronograma, User Stories** → pestañas del mismo xlsx + re-estimación 313 → 290 SP de los `.pptx`.
 
